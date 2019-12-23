@@ -1,0 +1,41 @@
+.card-over {
+  width: 100%;
+}
+
+.card-header {
+  border: 0px;
+  box-shadow: none;
+  background-color: white;
+}
+
+.card-header p {
+  margin-bottom: 0px;
+}
+
+.type-header {
+  display: flex;
+}
+.type-header hr {
+  width: 45%;
+}
+
+.type-header p {
+  font-size: 20px;
+  width: 10%;
+}
+
+.product-card .col-6.col-sm-6.col-md-3 {
+  padding-left: 5px;
+  padding-right: 5px;
+  margin-bottom: 10px;
+}
+
+.product-card .card {
+  border: 0px;
+  box-shadow: none;
+  background-color: white;
+}
+
+.product-card .card-img-overlay {
+  top: 70%;
+}
