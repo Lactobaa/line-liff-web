@@ -2,47 +2,13 @@
 import React, { Component } from 'react';
 import request from 'then-request';
 import {
-  Card, Button, CardTitle, CardText, Row, Col, CardImg, CardDeck, CardGroup
+  Card, Button, CardTitle, CardText, Row, Col, CardImg, CardGroup
   , Modal, ModalHeader, ModalBody, ModalFooter, FormGroup, Label
   , Input
 } from 'reactstrap';
 import '../assets/css/products.css';
 
-const products = [
-  {
-    name: 'TEST1',
-    price: 160,
-    img: `${process.env.PUBLIC_URL}/img/products/latte.jpg`,
-  },
-  {
-    name: 'TEST1',
-    price: 160,
-    img: `${process.env.PUBLIC_URL}/img/products/latte.jpg`,
-  },
-  {
-    name: 'TEST1',
-    price: 160,
-    img: `${process.env.PUBLIC_URL}/img/products/latte.jpg`,
-  },
-  {
-    name: 'TEST1',
-    price: 160,
-    img: `${process.env.PUBLIC_URL}/img/products/latte.jpg`,
-  },
-  {
-    name: 'TEST1',
-    price: 160,
-    img: `${process.env.PUBLIC_URL}/img/products/latte.jpg`,
-  },
-  {
-    name: 'TEST1',
-    price: 160,
-    img: `${process.env.PUBLIC_URL}/img/products/latte.jpg`,
-  },
-];
-
 class Products extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -59,14 +25,14 @@ class Products extends Component {
   }
 
   componentDidMount() {
-    request('GET', 'http://localhost:9002/api/v1/product',
+    request('GET', 'https://line-api.lactobaa.now.sh/api/v1/product',
       {})
       .getBody('utf8')
       .then(JSON.parse)
       .done((res) => {
         if (res.data && res.data.length) {
           res.data.map(d => {
-            d.img = `http://localhost:9002/${d.img}`;
+            d.img = `https://line-api.lactobaa.now.sh/${d.img}`;
           });
           this.setState({
             productsList: res.data
@@ -78,7 +44,7 @@ class Products extends Component {
   async deleteProduct(index) {
     let { productsList } = this.state;
     const id = productsList[index]._id.toString();
-    await request('DELETE', `http://localhost:9002/api/v1/product/${id}/delete`,
+    await request('DELETE', `https://line-api.lactobaa.now.sh/api/v1/product/${id}/delete`,
       {})
       .getBody('utf8')
       .then(JSON.parse)
@@ -133,14 +99,14 @@ class Products extends Component {
       img: selectedFile,
     };
     if (action === 'create') {
-      await request('POST', 'http://localhost:9002/api/v1/product/add',
+      await request('POST', 'https://line-api.lactobaa.now.sh/api/v1/product/add',
         { json: body })
         .getBody('utf8')
         .then(JSON.parse)
         .done((res) => {
           console.log(res.data);
           if (res.data) {
-            res.data.img = `http://localhost:9002/${res.data.img}`;
+            res.data.img = `https://line-api.lactobaa.now.sh/${res.data.img}`;
             productsList.push(res.data);
             this.setState({
               productsList,
@@ -155,7 +121,7 @@ class Products extends Component {
         });
     } else {
       const id = productsList[index]._id.toString();
-      await request('PUT', `http://localhost:9002/api/v1/product/${id}/`,
+      await request('PUT', `https://line-api.lactobaa.now.sh/api/v1/product/${id}/`,
         { json: body })
         .getBody('utf8')
         .then(JSON.parse)
@@ -166,7 +132,7 @@ class Products extends Component {
               id: res.data._id.toString(),
               name: res.data.name,
               price: res.data.price,
-              img: `http://localhost:9002/${res.data.img}`,
+              img: `https://line-api.lactobaa.now.sh/${res.data.img}`,
             };
             productsList[index] = product;
             this.setState({
