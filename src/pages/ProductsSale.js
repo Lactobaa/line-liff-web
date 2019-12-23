@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import request from 'then-request';
 import {
-  Card, Button, CardTitle, CardText, Row, Col, CardImg, CardDeck, CardGroup
-  , Modal, ModalHeader, ModalBody, ModalFooter, FormGroup, Label, CardImgOverlay
-  , Input, CardFooter
+  Card, Row, Col, CardImg, CardImgOverlay
 } from 'reactstrap';
 import '../utils/vconsole';
 import '../assets/css/productsale.css';
+import config from '../config';
 
 const liff = window.liff;
 class ProductsSale extends Component {
@@ -23,14 +22,14 @@ class ProductsSale extends Component {
   }
 
   async componentDidMount() {
-    request('GET', 'https://line-api.lactobaa.now.sh/api/v1/product',
+    request('GET', `${config.api}/api/v1/product`,
       {})
       .getBody('utf8')
       .then(JSON.parse)
       .done((res) => {
         if (res.data && res.data.length) {
           res.data.map(d => {
-            d.img = `https://line-api.lactobaa.now.sh/${d.img}`;
+            d.img = `${config.api}/${d.img}`;
           });
           this.setState({
             productsList: res.data
@@ -43,7 +42,6 @@ class ProductsSale extends Component {
   initialize() {
     liff.init(async () => {
       let getProfile = await liff.getProfile();
-      console.log('aaaaaaaa', getProfile);
       this.setState({
         name: getProfile.displayName,
         userLineID: getProfile.userId,
@@ -54,14 +52,13 @@ class ProductsSale extends Component {
   }
 
   saveOrder(product) {
-    console.log('saveOrder', this.state);
     const body = {
       name: 'lacto',
       userId: this.state.userLineID,
       status: 'created',
       product,
     }
-    request('POST', 'https://line-api.lactobaa.now.sh/api/v1/order/add',
+    request('POST', `${config.api}/api/v1/order/add`,
       { json: body })
       .getBody('utf8')
       .then(JSON.parse)

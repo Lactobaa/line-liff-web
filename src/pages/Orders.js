@@ -4,6 +4,7 @@ import request from 'then-request';
 import {
   Button,
 } from 'reactstrap';
+import config from '../config';
 
 class Orders extends Component {
   constructor(props) {
@@ -18,7 +19,7 @@ class Orders extends Component {
   }
 
   getOrders() {
-    request('GET', 'https://line-api.lactobaa.now.sh/api/v1/order',
+    request('GET', `${config.api}/api/v1/order`,
       {})
       .getBody('utf8')
       .then(JSON.parse)
@@ -50,7 +51,7 @@ class Orders extends Component {
       userId: order.userId,
       status: 'served',
     }
-    await request('PUT', `https://line-api.lactobaa.now.sh/api/v1/order/${id}`,
+    await request('PUT', `${config.api}/api/v1/order/${id}`,
       { json: body })
       .getBody('utf8')
       .then(JSON.parse)

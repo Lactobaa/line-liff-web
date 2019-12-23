@@ -7,6 +7,7 @@ import {
   , Input
 } from 'reactstrap';
 import '../assets/css/products.css';
+import config from '../config';
 
 class Products extends Component {
   constructor(props) {
@@ -25,14 +26,14 @@ class Products extends Component {
   }
 
   componentDidMount() {
-    request('GET', 'https://line-api.lactobaa.now.sh/api/v1/product',
+    request('GET', `${config.api}/api/v1/product`,
       {})
       .getBody('utf8')
       .then(JSON.parse)
       .done((res) => {
         if (res.data && res.data.length) {
           res.data.map(d => {
-            d.img = `https://line-api.lactobaa.now.sh/${d.img}`;
+            d.img = `${config.api}/${d.img}`;
           });
           this.setState({
             productsList: res.data
@@ -44,7 +45,7 @@ class Products extends Component {
   async deleteProduct(index) {
     let { productsList } = this.state;
     const id = productsList[index]._id.toString();
-    await request('DELETE', `https://line-api.lactobaa.now.sh/api/v1/product/${id}/delete`,
+    await request('DELETE', `${config.api}/api/v1/product/${id}/delete`,
       {})
       .getBody('utf8')
       .then(JSON.parse)
@@ -99,14 +100,14 @@ class Products extends Component {
       img: selectedFile,
     };
     if (action === 'create') {
-      await request('POST', 'https://line-api.lactobaa.now.sh/api/v1/product/add',
+      await request('POST', `${config.api}/api/v1/product/add`,
         { json: body })
         .getBody('utf8')
         .then(JSON.parse)
         .done((res) => {
           console.log(res.data);
           if (res.data) {
-            res.data.img = `https://line-api.lactobaa.now.sh/${res.data.img}`;
+            res.data.img = `${config.api}/${res.data.img}`;
             productsList.push(res.data);
             this.setState({
               productsList,
@@ -121,7 +122,7 @@ class Products extends Component {
         });
     } else {
       const id = productsList[index]._id.toString();
-      await request('PUT', `https://line-api.lactobaa.now.sh/api/v1/product/${id}/`,
+      await request('PUT', `${config.api}/api/v1/product/${id}/`,
         { json: body })
         .getBody('utf8')
         .then(JSON.parse)
@@ -132,7 +133,7 @@ class Products extends Component {
               id: res.data._id.toString(),
               name: res.data.name,
               price: res.data.price,
-              img: `https://line-api.lactobaa.now.sh/${res.data.img}`,
+              img: `${config.api}/${res.data.img}`,
             };
             productsList[index] = product;
             this.setState({
